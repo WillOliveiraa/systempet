@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import DataTable from 'react-data-table-component';
+// import DataTable from 'react-data-table-component';
 
 const data = [{ id: 1, title: 'Conan the Barbarian', year: '1982' }];
 const columns = [
@@ -19,11 +19,12 @@ const columns = [
 class PurchaseList extends Component {
     render() {
         return (
-            <DataTable
-                title="Arnold Movies"
-                columns={columns}
-                data={data}
-            />
+            <h1>List</h1>
+            // <DataTable
+            //     title="Arnold Movies"
+            //     columns={columns}
+            //     data={data}
+            // />
         );
     }
 }

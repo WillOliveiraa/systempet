@@ -21,7 +21,7 @@ const login = (req, res, next) => {
             return sendErrorsFromDB(res, err)
         } else if (user && bcrypt.compareSync(password, user.password)) {
             // manda senha compactada para o banco com bcrypt
-            const token = jwt.sign(user, env.authSecret, {
+            const token = jwt.sign({ ...user }, env.authSecret, {
                 expiresIn: "1 day"
             })
             const { name, email } = user
@@ -63,7 +63,7 @@ const signup = (req, res, next) => {
     if (!bcrypt.compareSync(confirmPassword, passwordHash)) {
         return res.status(400).send({ errors: ['Senhas não conferem.'] })
     }
-    
+
     User.findOne({ email }, (err, user) => {
         if (err) {
             return sendErrorsFromDB(res, err)
