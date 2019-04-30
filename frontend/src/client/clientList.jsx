@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import DataTable from 'react-data-table-component';
 
 import { getList, showUpdate, showDelete } from '../crud/crudActions';
 import { CLIENT_FORM } from '../main/util/types';
+import CustomButton from '../common/form/CustomButton';
 
 class ClientList extends Component {
 
@@ -11,49 +13,65 @@ class ClientList extends Component {
         this.props.getList('clients', CLIENT_FORM);
     }
 
-    renderRows() {
-        const list = this.props.list || [];
-        return list.map(cli => (
-            <tr key={cli._id}>
-                <td>{cli.name}</td>
-                <td>{cli.cpf}</td>
-                <td>{cli.email}</td>
-                <td>{cli.cellphone}</td>
-                <td>
-                    <button
-                        className='btn btn-warning' onClick={() =>
-                            this.props.showUpdate(cli, CLIENT_FORM)}
-                    >
-                        <i className='fa fa-pencil'></i>
-                    </button>
-                    <button
-                        className='btn btn-danger' onClick={() =>
-                            this.props.showDelete(cli, CLIENT_FORM)}
-                    >
-                        <i className='fa fa-trash-o'></i>
-                    </button>
-                </td>
-            </tr>
-        ));
-    }
-
     render() {
+        const list = this.props.list || [];
+        const columns = [
+            {
+                name: 'Nome',
+                selector: 'name',
+                sortable: true,
+            },
+            {
+                name: 'CPF',
+                selector: 'cpf',
+                sortable: true,
+                right: true,
+            },
+            {
+                name: 'E-mail',
+                selector: 'email',
+                sortable: true,
+                right: true,
+            },
+            {
+                name: 'Celular',
+                selector: 'cellphone',
+                sortable: true,
+                right: true,
+            },
+            {
+                name: 'Editar',
+                selector: 'edit',
+                sortable: true,
+                right: true,
+                cell: row => <CustomButton row={row} nameBtn='warning' icon='pencil' onClickBtn={() => this.props.showUpdate(row, CLIENT_FORM)} />,
+                ignoreRowClick: true,
+                allowOverflow: true,
+                button: true,
+                width: '56px',
+            },
+            {
+                name: 'Remover',
+                selector: 'remove',
+                sortable: true,
+                right: true,
+                cell: row => <CustomButton row={row} nameBtn='danger' icon='trash-o' onClickBtn={() => this.props.showDelete(row, CLIENT_FORM)} />,
+                ignoreRowClick: true,
+                allowOverflow: true,
+                button: true,
+                width: '56px',
+            },
+        ];
+        
         return (
             <div>
-                <table className='table'>
-                    <thead>
-                        <tr>
-                            <th>Nome</th>
-                            <th>CPF</th>
-                            <th>E-mail</th>
-                            <th>Celular</th>
-                            <th className='table-actions'>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.renderRows()}
-                    </tbody>
-                </table>
+                <DataTable
+                    columns={columns}
+                    data={list}
+                    pagination
+                    noHeader
+                    defaultSortField='name'
+                />
             </div>
         );
     }

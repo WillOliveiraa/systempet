@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import DataTable from 'react-data-table-component';
+import moment from 'moment';
+import 'moment/locale/pt-br';
 
 import { getList, showUpdate, showDelete } from '../crud/crudActions';
 import { SALE_FORM } from '../main/util/types';
 import { floatToString } from '../crud/functions';
+import CustomButton from '../common/form/CustomButton';
 
 class SaleList extends Component {
 
@@ -12,50 +16,78 @@ class SaleList extends Component {
         this.props.getList('sales', SALE_FORM);
     }
 
-    renderRows() {
-        const list = this.props.list || [];
-        // console.log(list);
-        return list.map(sale => (
-            <tr key={sale._id}>
-                <td>{sale.date}</td>
-                <td>{sale.paymentForm}</td>
-                <td>{sale.client[0].name}</td>
-                <td>{floatToString(sale.total)}</td>
-                <td>
-                    <button
-                        className='btn btn-warning' onClick={() =>
-                            this.props.showUpdate(sale, SALE_FORM)}
-                    >
-                        <i className='fa fa-pencil'></i>
-                    </button>
-                    <button
-                        className='btn btn-danger' onClick={() =>
-                            this.props.showDelete(sale, SALE_FORM)}
-                    >
-                        <i className='fa fa-trash-o'></i>
-                    </button>
-                </td>
-            </tr>
-        ));
+    convertStringToDate(date) {
+        const dateParts = date.split('/');
+        // console.log(dateParts);
+        const data = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+        // console.log(data);
+        return data.toString();
     }
 
     render() {
+        const list = this.props.list || [];
+        const columns = [
+            {
+                name: 'Data',
+                selector: 'date',
+                sortable: true,
+                format: d => moment(this.convertStringToDate(d.date)).format('L') // DD/mm/yyyy
+                // format: d => moment(d.date, 'DD/MM/YYYY').format('L') // DD/mm/yyyy
+                // format: d => moment(d.date, 'DD/MM/YYYY').format('lll') // 15 Abr 2019 as 12:05
+            },
+            {
+                name: 'Forma de Pagamento',
+                selector: 'paymentForm',
+                sortable: true
+            },
+            {
+                name: 'Cliente',
+                selector: 'name',
+                cell: row => row.client[0].name,
+                sortable: true
+            },
+
+            {
+                name: 'Total',
+                selector: 'total',
+                cell: row => floatToString(row.total),
+                sortable: true,
+                width: '80px'
+            },
+            {
+                name: 'Editar',
+                selector: 'edit',
+                sortable: true,
+                right: true,
+                cell: row => <CustomButton row={row} nameBtn='warning' icon='pencil' onClickBtn={() => this.props.showUpdate(row, SALE_FORM)} />,
+                ignoreRowClick: true,
+                allowOverflow: true,
+                button: true,
+                width: '56px',
+            },
+            {
+                name: 'Remover',
+                selector: 'remove',
+                sortable: true,
+                right: true,
+                cell: row => <CustomButton row={row} nameBtn='danger' icon='trash-o' onClickBtn={() => this.props.showDelete(row, SALE_FORM)} />,
+                ignoreRowClick: true,
+                allowOverflow: true,
+                button: true,
+                width: '56px',
+            },
+        ];
+
         return (
-            <div> {/* table-hover */}
-                <table className='table table-bordered table-striped'>
-                    <thead>
-                        <tr>
-                            <th className='sorting'>Data</th>
-                            <th>Forma de Pagamento</th>
-                            <th>Cliente</th>
-                            <th>Total</th>
-                            <th className='table-actions'>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.renderRows()}
-                    </tbody>
-                </table>
+            <div>
+                <DataTable
+                    columns={columns}
+                    data={list}
+                    pagination
+                    noHeader
+                    defaultSortField='date'
+                    defaultSortAsc
+                />
             </div>
         );
     }
@@ -63,5 +95,6 @@ class SaleList extends Component {
 
 const mapStateToProps = state => ({ list: state.crud.salesList });
 const mapDispatchToProps = dispatch => bindActionCreators({
-    getList, showUpdate, showDelete }, dispatch);
+    getList, showUpdate, showDelete
+}, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(SaleList);

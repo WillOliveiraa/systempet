@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import DataTable from 'react-data-table-component';
 
 import { getList, showUpdate, showDelete } from '../crud/crudActions';
 import { ANIMAL_FORM } from '../main/util/types';
+import CustomButton from '../common/form/CustomButton';
 
 class AnimalList extends Component {
 
@@ -11,51 +13,71 @@ class AnimalList extends Component {
         this.props.getList('animals', ANIMAL_FORM);
     }
 
-    renderRows() {
-        const list = this.props.list || [];
-        return list.map(ani => (
-            <tr key={ani._id}>
-                <td>{ani.name}</td>
-                <td>{ani.breed}</td>
-                <td>{ani.situation}</td>
-                <td>{ani.birthDate}</td>
-                <td>{ani.color}</td>
-                <td>
-                    <button
-                        className='btn btn-warning' onClick={() =>
-                            this.props.showUpdate(ani, ANIMAL_FORM)}
-                    >
-                        <i className='fa fa-pencil'></i>
-                    </button>
-                    <button
-                        className='btn btn-danger' onClick={() =>
-                            this.props.showDelete(ani, ANIMAL_FORM)}
-                    >
-                        <i className='fa fa-trash-o'></i>
-                    </button>
-                </td>
-            </tr>
-        ));
-    }
-
     render() {
+        const list = this.props.list || [];
+        const columns = [
+            {
+                name: 'Nome',
+                selector: 'name',
+                sortable: true,
+            },
+            {
+                name: 'Raça',
+                selector: 'breed',
+                sortable: true,
+                right: true,
+            },
+            {
+                name: 'Situação',
+                selector: 'situation',
+                sortable: true,
+                right: true,
+            },
+            {
+                name: 'Data de Nascimento',
+                selector: 'birthDate',
+                sortable: true,
+                right: true,
+            },
+            {
+                name: 'Cor',
+                selector: 'color',
+                sortable: true,
+                right: true,
+            },
+            {
+                name: 'Editar',
+                selector: 'edit',
+                sortable: true,
+                right: true,
+                cell: row => <CustomButton row={row} nameBtn='warning' icon='pencil' onClickBtn={() => this.props.showUpdate(row, ANIMAL_FORM)} />,
+                ignoreRowClick: true,
+                allowOverflow: true,
+                button: true,
+                width: '56px',
+            },
+            {
+                name: 'Remover',
+                selector: 'remove',
+                sortable: true,
+                right: true,
+                cell: row => <CustomButton row={row} nameBtn='danger' icon='trash-o' onClickBtn={() => this.props.showDelete(row, ANIMAL_FORM)} />,
+                ignoreRowClick: true,
+                allowOverflow: true,
+                button: true,
+                width: '56px',
+            },
+        ];
         return (
             <div>
-                <table className='table'>
-                    <thead>
-                        <tr>
-                            <th>Nome</th>
-                            <th>Raça</th>
-                            <th>Situação</th>
-                            <th>Data de Nascimento</th>
-                            <th>Cor</th>
-                            <th className='table-actions'>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.renderRows()}
-                    </tbody>
-                </table>
+                <DataTable
+                    columns={columns}
+                    data={list}
+                    pagination
+                    noHeader
+                    defaultSortField='name'
+                    // highlightOnHover
+                />
             </div>
         );
     }
@@ -63,5 +85,6 @@ class AnimalList extends Component {
 
 const mapStateToProps = state => ({ list: state.crud.animalsList });
 const mapDispatchToProps = dispatch => bindActionCreators({
-    getList, showUpdate, showDelete }, dispatch);
+    getList, showUpdate, showDelete
+}, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(AnimalList);
