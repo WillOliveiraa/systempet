@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { changeProduct, changeClient } from '../../crud/crudActions';
+import { changeProduct, changeClient, changeProvider } from '../../crud/crudActions';
 import If from '../operator/if';
 import Grid from '../layout/grid';
 import { floatToString } from '../../crud/functions';
@@ -11,12 +11,23 @@ class LabelAndSelect extends Component {
 
     changeValue(e) {
         const { value } = e.target;
-        this.props.isPro ? this.props.changeProduct(value) : this.props.changeClient(value);
+        // this.props.isPro ? this.props.changeProduct(value) : this.props.changeClient(value);
+        if (this.props.type === 'provider') {
+            this.props.changeProvider(value);
+        } else if (this.props.type === 'client') {
+            this.props.changeClient(value);
+        } else this.props.changeProduct(value);
     }
 
     render() {
         // if (!this.props.isPro) console.log(this.props);
-        const { clientId } = this.props;
+        const { clientId, providerId } = this.props;
+        let value;
+        if (this.props.type === 'provider') {
+            value = providerId;
+        } else if (this.props.type === 'client') {
+            value = clientId;
+        } else value = this.props.input.value._id;
         return (
             <Grid cols={this.props.cols}>
                 <div className='form-group'>
@@ -27,7 +38,8 @@ class LabelAndSelect extends Component {
                         placeholder={this.props.placeholder}
                         disabled={this.props.readOnly}
                         type={this.props.type}
-                        value={this.props.isPro ? this.props.input.value._id : clientId}
+                        // value={this.props.isPro ? this.props.input.value._id : clientId}
+                        value={value}
                         onChange={(e) => this.changeValue(e)}
                     >
                         <option></option>
@@ -45,7 +57,7 @@ class LabelAndSelect extends Component {
     }
 }
 
-const mapStateToProps = state => ({ clientId: state.crud.clientId });
-const mapDispatchToProps = dispatch => bindActionCreators({ changeProduct, changeClient }, dispatch);
+const mapStateToProps = state => ({ clientId: state.crud.clientId, providerId: state.crud.providerId });
+const mapDispatchToProps = dispatch => bindActionCreators({ changeProduct, changeClient, changeProvider }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(LabelAndSelect);

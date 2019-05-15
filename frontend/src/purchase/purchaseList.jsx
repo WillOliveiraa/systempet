@@ -1,32 +1,100 @@
 import React, { Component } from 'react';
-// import DataTable from 'react-data-table-component';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import DataTable from 'react-data-table-component';
+import moment from 'moment';
+import 'moment/locale/pt-br';
 
-const data = [{ id: 1, title: 'Conan the Barbarian', year: '1982' }];
-const columns = [
-    {
-        name: 'Title',
-        selector: 'title',
-        sortable: true,
-    },
-    {
-        name: 'Year',
-        selector: 'year',
-        sortable: true,
-        right: true,
-    },
-];
+import { getList, showUpdate, showDelete } from '../crud/crudActions';
+import { PURCHASE_FORM } from '../main/util/types';
+import { floatToString } from '../crud/functions';
+import CustomButton from '../common/form/CustomButton';
 
 class PurchaseList extends Component {
+
+    componentWillMount() {
+        this.props.getList('purchases', PURCHASE_FORM);
+    }
+
+    convertStringToDate(date) {
+        const dateParts = date.split('/');
+        // console.log(dateParts);
+        const data = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+        // console.log(data);
+        return data.toString();
+    }
+
     render() {
+        const list = this.props.list || [];
+        const columns = [
+            {
+                name: 'Data',
+                selector: 'date',
+                sortable: true,
+                format: d => moment(this.convertStringToDate(d.date)).format('L') // DD/mm/yyyy
+                // format: d => moment(d.date, 'DD/MM/YYYY').format('L') // DD/mm/yyyy
+                // format: d => moment(d.date, 'DD/MM/YYYY').format('lll') // 15 Abr 2019 as 12:05
+            },
+            {
+                name: 'Forma de Pagamento',
+                selector: 'paymentForm',
+                sortable: true
+            },
+            {
+                name: 'Fornecedor',
+                selector: 'name',
+                cell: row => row.provider[0].name,
+                sortable: true
+            },
+
+            {
+                name: 'Total',
+                selector: 'total',
+                cell: row => floatToString(row.total),
+                sortable: true,
+                width: '80px'
+            },
+            {
+                name: 'Editar',
+                selector: 'edit',
+                sortable: true,
+                right: true,
+                cell: row => <CustomButton row={row} nameBtn='warning' icon='pencil' onClickBtn={() => this.props.showUpdate(row, PURCHASE_FORM)} />,
+                ignoreRowClick: true,
+                allowOverflow: true,
+                button: true,
+                width: '56px',
+            },
+            {
+                name: 'Remover',
+                selector: 'remove',
+                sortable: true,
+                right: true,
+                cell: row => <CustomButton row={row} nameBtn='danger' icon='trash-o' onClickBtn={() => this.props.showDelete(row, PURCHASE_FORM)} />,
+                ignoreRowClick: true,
+                allowOverflow: true,
+                button: true,
+                width: '56px',
+            },
+        ];
+
         return (
-            <h1>List</h1>
-            // <DataTable
-            //     title="Arnold Movies"
-            //     columns={columns}
-            //     data={data}
-            // />
+            <div>
+                <DataTable
+                    columns={columns}
+                    data={list}
+                    pagination
+                    noHeader
+                    defaultSortField='date'
+                    defaultSortAsc
+                />
+            </div>
         );
     }
 }
 
-export default PurchaseList;
+const mapStateToProps = state => ({ list: state.crud.purchasesList });
+const mapDispatchToProps = dispatch => bindActionCreators({
+    getList, showUpdate, showDelete
+}, dispatch);
+export default connect(mapStateToProps, mapDispatchToProps)(PurchaseList);

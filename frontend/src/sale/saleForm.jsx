@@ -123,11 +123,12 @@ class SaleForm extends Component {
                         className='form-control'
                         readOnly={this.props.readOnly}
                         hide={false}
+                        type='client'
                     />
                     <ItemList
                         cols='12 12' list={saleItens} readOnly={readOnly}
                         field='saleItens' legend='Itens de Venda'
-                        update={this.props.updateT}
+                        update={this.props.updateT} isSale
                     />
                     <Summary legend='Resumo' total={sumOfTotal} count={saleItens.length} />
                 </div>

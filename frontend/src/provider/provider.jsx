@@ -9,23 +9,23 @@ import TabsHeader from '../common/tab/tabsHeader';
 import TabHeader from '../common/tab/tabHeader';
 import TabsContent from '../common/tab/tabsContent';
 import TabContent from '../common/tab/tabContent';
-import { PURCHASE_FORM } from '../main/util/types';
 import { init, create, update, remove } from '../crud/crudActions';
 
-import List from './purchaseList';
-import Form from './purchaseForm';
+import List from './providerList';
+import Form from './providerForm';
+import { PROVIDER_FORM } from '../main/util/types';
 
-class Purchase extends Component {
+class Provider extends Component {
 
     componentWillMount() {
-        this.props.init('purchases', PURCHASE_FORM);
-        localStorage.setItem('form', PURCHASE_FORM);
+        this.props.init('providers', PROVIDER_FORM);
+        localStorage.setItem('form', PROVIDER_FORM);
     }
 
     render() {
         return (
             <div>
-                <ContentHeader title='Compras' small='Movimentações' />
+                <ContentHeader title='Fornecedores' small='Cadastro' />
                 <Content>
                     <Tabs>
                         <TabsHeader>
@@ -67,5 +67,4 @@ class Purchase extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators({
     init, create, update, remove
 }, dispatch);
-
-export default connect(null, mapDispatchToProps)(Purchase);
+export default connect(null, mapDispatchToProps)(Provider);

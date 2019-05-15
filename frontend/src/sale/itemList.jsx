@@ -9,9 +9,11 @@ import Grid from '../common/layout/grid';
 import LabelAndSelect from '../common/form/labelAndSelect';
 import Input from '../common/form/input';
 import { getList, changeUpdate } from '../crud/crudActions';
-import { SALE_FORM, PRODUCT_FORM } from '../main/util/types';
+import { SALE_FORM, PRODUCT_FORM, PURCHASE_FORM } from '../main/util/types';
 import labelAndInput from '../common/form/labelAndInput';
 import { stringToFloat, floatToString } from '../crud/functions';
+
+let form = PURCHASE_FORM;
 
 class ItemList extends Component {
 
@@ -25,6 +27,7 @@ class ItemList extends Component {
     }
 
     componentWillMount() {
+        if (this.props.isSale) form = SALE_FORM;
         this.props.getList('products', PRODUCT_FORM);
         // console.log(this.sunDiscount(500, 35));
     }
@@ -40,7 +43,6 @@ class ItemList extends Component {
             const item = { id: i, value: true, icon: 'pencil', disabled: false };
             list.push(item);
         }
-        // console.log(list);
         this.setState({ listReadEdt: list });
     }
 
@@ -70,7 +72,7 @@ class ItemList extends Component {
                         : item.subTotal = subTotal;
                 }
                 // console.log(item);
-                this.props.arrayInsert(SALE_FORM, this.props.field, index, item);
+                this.props.arrayInsert(form, this.props.field, index, item);
                 if (isEdit) this.props.changeUpdate(true);
             } else {
                 for (let i = 0; i < this.props.productsList.length; i++) {
@@ -84,7 +86,7 @@ class ItemList extends Component {
                                 this.sunDiscount(subTotal, +this.props.discount) : subTotal
                         };
                         // console.log(saleItem);
-                        this.props.arrayInsert(SALE_FORM, this.props.field, index, saleItem);
+                        this.props.arrayInsert(form, this.props.field, index, saleItem);
                     }
                 }
             }
@@ -107,7 +109,7 @@ class ItemList extends Component {
                 list.splice(index, 1);
                 this.setState({ listReadEdt: list });
             }
-            this.props.arrayRemove(SALE_FORM, this.props.field, index);
+            this.props.arrayRemove(form, this.props.field, index);
         }
     }
 
@@ -297,7 +299,7 @@ class ItemList extends Component {
         );
     }
 }
-const selector = formValueSelector(SALE_FORM);
+const selector = formValueSelector(form);
 const mapStateToProps = state => ({
     productsList: state.crud.productsList,
     productId: state.crud.productId,

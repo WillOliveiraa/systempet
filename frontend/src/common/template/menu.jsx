@@ -12,6 +12,10 @@ export default props => (
                 label='Clientes' icon='user'
             />
             <MenuItem
+                path='providers'
+                label='Fornecedores' icon='user-o'
+            />
+            <MenuItem
                 path='animals'
                 label='Animais' icon='paw'
             />

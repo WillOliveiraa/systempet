@@ -3,6 +3,7 @@ import { Switch, Route, Redirect } from 'react-router';
 
 import Dashboard from '../dashboard/dashboard';
 import Client from '../client/client';
+import Provider from '../provider/provider';
 import Product from '../product/product';
 import Animal from '../animal/animal';
 import Purchase from '../purchase/purchase';
@@ -13,6 +14,7 @@ export default props => (
         <Switch>
             <Route exact path='/' component={Dashboard} />
             <Route path='/clients' component={Client} />
+            <Route path='/providers' component={Provider} />
             <Route path='/products' component={Product} />
             <Route path='/animals' component={Animal} />
             <Route path='/purchases' component={Purchase} />

@@ -7,12 +7,13 @@ import consts from '../main/util/string';
 import {
     CLIENTS_FETCHED, CLIENT_FORM, PRODUCT_FORM, ANIMAL_FORM, SALE_FORM, PRODUCTS_FETCHED,
     ANIMALS_FETCHED, SALES_FETCHED, CHANGE_PRODUCT_SALES, CHANGE_PAYMENT_SALES, CHANGE_CLIENT_SALES,
-    UPDATE_TOTAL_SALES
+    UPDATE_TOTAL_SALES, PURCHASE_FORM, PURCHASE_FETCHED, PROVIDER_FORM, PROVIDERS_FETCHED, CHANGE_PROVIDER_PURCHASES
 } from '../main/util/types';
 
 const INITIAL_VALUES = {};
 // const INITIAL_VALUES_SALES = {};
 const INITIAL_VALUES_SALES = { saleItens: [], date: getDateToday(), paymentForm: 'a vista' };
+const INITIAL_VALUES_PURCHASE = { purchaseItens: [], date: getDateToday(), paymentForm: 'a vista' };
 // const INITIAL_VALUES_SALES = { saleItens: [{ product: [{}] }] };
 
 export function getList(url, form) {
@@ -21,6 +22,11 @@ export function getList(url, form) {
         case CLIENT_FORM:
             return {
                 type: CLIENTS_FETCHED,
+                payload: request
+            };
+        case PROVIDER_FORM:
+            return {
+                type: PROVIDERS_FETCHED,
                 payload: request
             };
         case PRODUCT_FORM:
@@ -36,6 +42,11 @@ export function getList(url, form) {
         case SALE_FORM:
             return {
                 type: SALES_FETCHED,
+                payload: request
+            };
+        case PURCHASE_FORM:
+            return {
+                type: PURCHASE_FETCHED,
                 payload: request
             };
         default:
@@ -61,6 +72,9 @@ function submit(values, method, form) {
         case CLIENT_FORM:
             url = 'clients';
             break;
+        case PROVIDER_FORM:
+            url = 'providers';
+            break;
         case PRODUCT_FORM:
             url = 'products';
             break;
@@ -69,6 +83,9 @@ function submit(values, method, form) {
             break;
         case SALE_FORM:
             url = 'sales';
+            break;
+        case PURCHASE_FORM:
+            url = 'purchases';
             break;
         default:
             url = '';
@@ -106,12 +123,18 @@ export function showDelete(values, form) {
 }
 
 export function init(url, form) {
+    let values;
+    console.log(url + '=' + form);
+    if (form === SALE_FORM) {
+        values = INITIAL_VALUES_SALES;
+    } else if (form === PURCHASE_FORM) {
+        values = INITIAL_VALUES_PURCHASE;
+    } else values = INITIAL_VALUES;
     return [
         showTabs('tabList', 'tabCreate'),
         selectTab('tabList'),
         getList(url, form),
-        form === SALE_FORM ? initialize(form, INITIAL_VALUES_SALES) :
-            initialize(form, INITIAL_VALUES)
+        initialize(form, values)
     ];
 }
 
@@ -124,6 +147,12 @@ export function changeProduct(id) {
 export function changeClient(id) {
     return dispatch => {
         dispatch({ type: CHANGE_CLIENT_SALES, payload: id });
+    };
+}
+
+export function changeProvider(id) {
+    return dispatch => {
+        dispatch({ type: CHANGE_PROVIDER_PURCHASES, payload: id });
     };
 }
 

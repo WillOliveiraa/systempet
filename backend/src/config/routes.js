@@ -33,6 +33,10 @@ module.exports = function (server) {
     const Client = require('../api/client/clientService')
     Client.register(protectedApi, '/clients')
 
+    // Rotas providers
+    const Provider = require('../api/provider/providerService')
+    Provider.register(protectedApi, '/providers')
+
     // Rotas Products
     const Product = require('../api/product/productService')
     Product.register(protectedApi, '/products')
@@ -44,6 +48,10 @@ module.exports = function (server) {
     // Rotas Sale
     const Sale = require('../api/sale/saleService')
     Sale.register(protectedApi, '/sales')
+
+    // Rotas Purchase
+    const Purchase = require('../api/purchase/purchaseService')
+    Purchase.register(protectedApi, '/purchases')
 
     /*
     * Rotas abertas
