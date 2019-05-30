@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import DataTable from 'react-data-table-component';
 
 import { getList, showUpdate, showDelete } from '../crud/crudActions';
+import { floatToString } from '../crud/functions';
 import { PRODUCT_FORM } from '../main/util/types';
 import CustomButton from '../common/form/CustomButton';
 
@@ -35,13 +36,13 @@ class ProductList extends Component {
             },
             {
                 name: 'Preço Compra',
-                selector: 'purchasePrice',
+                cell: row => floatToString(row.purchasePrice),
                 sortable: true,
                 right: true,
             },
             {
                 name: 'Preço Venda',
-                selector: 'salePrice',
+                cell: row => floatToString(row.salePrice),
                 sortable: true,
                 right: true,
             },

@@ -7,34 +7,34 @@ import ContentHeader from '../common/template/contentHeader';
 import Content from '../common/template/content';
 import ValueBox from '../common/widget/valueBox';
 import Row from '../common/layout/row';
-import { CLIENTS_COUNT, PRODUCTS_COUNT, ANIMALS_COUNT } from '../main/util/types';
+import { SALES_COUNT, PRODUCTS_COUNT, PURCHASES_COUNT } from '../main/util/types';
 
 class Dashboard extends Component {
 
     componentWillMount() {
-        this.props.initialCount('clients', CLIENTS_COUNT);
+        this.props.initialCount('sales', SALES_COUNT);
         this.props.initialCount('products', PRODUCTS_COUNT);
-        this.props.initialCount('animals', ANIMALS_COUNT);
+        this.props.initialCount('purchases', PURCHASES_COUNT);
     }
 
     render() {
-        const { client, product, animal } = this.props.dashboard;
+        const { sale, product, purchase } = this.props.dashboard;
         return (
             <div>
                 <ContentHeader title='Dashboard' small='Versão 1.0' />
                 <Content>
                     <Row>
                         <ValueBox
-                            cols='12 4' color='green' icon='user'
-                            value={client} text='Quantidade de Clientes'
+                            cols='12 4' color='green' icon='shopping-cart'
+                            value={sale} text='Quantidade de Vendas'
                         />
                         <ValueBox
-                            cols='12 4' color='red' icon='shopping-cart'
+                            cols='12 4' color='red' icon='paw'
                             value={product} text='Quantidade de Produtos'
                         />
                         <ValueBox
-                            cols='12 4' color='blue' icon='paw'
-                            value={animal} text='Quantidade de Animais'
+                            cols='12 4' color='blue' icon='shopping-bag'
+                            value={purchase} text='Quantidade de Compras'
                         />
                     </Row>
                 </Content>

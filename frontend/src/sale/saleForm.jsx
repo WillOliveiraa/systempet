@@ -62,11 +62,12 @@ class SaleForm extends Component {
         if (values.quantity !== undefined) delete values.quantity;
         // console.log(values);
         if (validate) {
-            const total = this.calculateSummary();
-            values.total = total.sumOfTotal;
-            if (action === 'Incluir') create(values);
-            else if (action === 'Alterar') update(values);
-            else if (action === 'Excluir') remove(values);
+            console.log(values);
+            // const total = this.calculateSummary();
+            // values.total = total.sumOfTotal;
+            // if (action === 'Incluir') create(values);
+            // else if (action === 'Alterar') update(values);
+            // else if (action === 'Excluir') remove(values);
         }
     }
 

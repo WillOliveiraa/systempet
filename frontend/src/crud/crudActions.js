@@ -124,12 +124,12 @@ export function showDelete(values, form) {
 
 export function init(url, form) {
     let values;
-    console.log(url + '=' + form);
     if (form === SALE_FORM) {
         values = INITIAL_VALUES_SALES;
     } else if (form === PURCHASE_FORM) {
         values = INITIAL_VALUES_PURCHASE;
     } else values = INITIAL_VALUES;
+    console.log(values);
     return [
         showTabs('tabList', 'tabCreate'),
         selectTab('tabList'),

@@ -13,7 +13,8 @@ import { SALE_FORM, PRODUCT_FORM, PURCHASE_FORM } from '../main/util/types';
 import labelAndInput from '../common/form/labelAndInput';
 import { stringToFloat, floatToString } from '../crud/functions';
 
-let form = PURCHASE_FORM;
+let form;
+localStorage.getItem('form') === SALE_FORM ? form = SALE_FORM : form = PURCHASE_FORM;
 
 class ItemList extends Component {
 
@@ -27,9 +28,10 @@ class ItemList extends Component {
     }
 
     componentWillMount() {
-        if (this.props.isSale) form = SALE_FORM;
+        this.props.isSale === true ? form = SALE_FORM : form = PURCHASE_FORM;
         this.props.getList('products', PRODUCT_FORM);
         // console.log(this.sunDiscount(500, 35));
+        // console.log(this.props.isSale);
     }
 
     componentDidMount() {
@@ -61,7 +63,8 @@ class ItemList extends Component {
                 isOk = false;
             }
         }
-        // console.log(this.props.productId);
+        console.log(this.props);
+        console.log(form);
         if (isOk) {
             this.updateRead(index + 1);
             if (item !== null) {
@@ -126,7 +129,7 @@ class ItemList extends Component {
             } else {
                 item.quantity = +item.quantity;
                 item.discount !== undefined ? item.discount = +item.discount
-                : item.discount = '0';
+                    : item.discount = '0';
                 this.remove(index, false);
                 this.add(true, index, item, true);
                 if (item.discount === '0') this.props.changeUpdate(false); // update total

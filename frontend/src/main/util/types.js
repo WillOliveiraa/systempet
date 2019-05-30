@@ -1,6 +1,8 @@
 export const CLIENTS_COUNT = 'clients_count';
 export const PRODUCTS_COUNT = 'products_count';
 export const ANIMALS_COUNT = 'animals_count';
+export const SALES_COUNT = 'sales_count';
+export const PURCHASES_COUNT = 'purchases_count';
 export const TAB_SELECTED = 'tab_selected';
 export const TAB_SHOWED = 'tab_showed';
 export const CLIENTS_FETCHED = 'clients_fetched';
