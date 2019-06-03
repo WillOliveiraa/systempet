@@ -7,12 +7,13 @@ import consts from '../main/util/string';
 import {
     CLIENTS_FETCHED, CLIENT_FORM, PRODUCT_FORM, ANIMAL_FORM, SALE_FORM, PRODUCTS_FETCHED,
     ANIMALS_FETCHED, SALES_FETCHED, CHANGE_PRODUCT_SALES, CHANGE_PAYMENT_SALES, CHANGE_CLIENT_SALES,
-    UPDATE_TOTAL_SALES, PURCHASE_FORM, PURCHASE_FETCHED, PROVIDER_FORM, PROVIDERS_FETCHED, CHANGE_PROVIDER_PURCHASES
+    UPDATE_TOTAL_SALES, PURCHASE_FORM, PURCHASE_FETCHED, PROVIDER_FORM, PROVIDERS_FETCHED, CHANGE_PROVIDER_PURCHASES,
+    CHANGE_DATE_SALES
 } from '../main/util/types';
 
 const INITIAL_VALUES = {};
 // const INITIAL_VALUES_SALES = {};
-const INITIAL_VALUES_SALES = { saleItens: [], date: getDateToday(), paymentForm: 'a vista' };
+const INITIAL_VALUES_SALES = { saleItens: [], date: new Date(), paymentForm: 'a vista' };
 const INITIAL_VALUES_PURCHASE = { purchaseItens: [], date: getDateToday(), paymentForm: 'a vista' };
 // const INITIAL_VALUES_SALES = { saleItens: [{ product: [{}] }] };
 
@@ -59,6 +60,7 @@ export function create(values) {
 }
 
 export function update(values) {
+    console.log(values);
     return submit(values, 'put', localStorage.getItem('form'));
 }
 
@@ -129,7 +131,7 @@ export function init(url, form) {
     } else if (form === PURCHASE_FORM) {
         values = INITIAL_VALUES_PURCHASE;
     } else values = INITIAL_VALUES;
-    console.log(values);
+    // console.log(values);
     return [
         showTabs('tabList', 'tabCreate'),
         selectTab('tabList'),
@@ -166,6 +168,12 @@ export function changePaymentForm(value) {
 export function changeUpdate(value) {
     return dispatch => {
         dispatch({ type: UPDATE_TOTAL_SALES, payload: value });
+    };
+}
+
+export function changeDate(value) {
+    return dispatch => {
+        dispatch({ type: CHANGE_DATE_SALES, payload: value });
     };
 }
 

@@ -9,5 +9,6 @@ import 'admin-lte/bootstrap/css/bootstrap.css';
 import 'admin-lte/dist/css/AdminLTE.css';
 import 'admin-lte/dist/css/skins/_all-skins.css';
 import 'admin-lte/plugins/iCheck/flat/blue.css';
+import 'react-datepicker/dist/react-datepicker.css';
 
 import './custom.css';

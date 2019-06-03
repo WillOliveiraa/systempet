@@ -16,3 +16,15 @@ button {
 .table-actions {
     width: 150px;
 }
+
+.react-datepicker__input-container {
+    display: block;
+}
+
+.react-datepicker-wrapper {
+    width: 100%;
+}
+
+html {
+    font-size: 14px;
+}

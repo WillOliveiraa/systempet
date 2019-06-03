@@ -21,3 +21,28 @@ export const floatToString = float => {
 };
 
 const getOnlyNumbers = value => value.replace(/[^\d]/g, '');
+
+export const convertStringToDate = date => { // 03/06/2019
+    const dateParts = date.split('/');
+    const data = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+    return data;
+    // return data.toString();
+}
+
+export const convertStringToDateTime = data => {
+    // const data = "15/01/2012 21:10:17";
+    const readableDate = data.substring(3, 6) + data.substring(0, 2) + data.substring(5, data.length);
+    return new Date(readableDate);
+}
+
+export const convertDateTimeToString = data => {
+    // const data = "15/01/2012 21:10:17";
+    const readableDate = data.substring(3, 6) + data.substring(0, 2) + data.substring(5, data.length);
+    return new Date(readableDate).toLocaleString();
+}
+
+export const setDateTime = data => {
+    const nowHour = new Date();
+    data = new Date(data);
+    return `${data.toLocaleDateString()} ${nowHour.toLocaleTimeString()}`;
+}

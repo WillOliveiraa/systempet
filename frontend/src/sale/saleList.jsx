@@ -7,21 +7,13 @@ import 'moment/locale/pt-br';
 
 import { getList, showUpdate, showDelete } from '../crud/crudActions';
 import { SALE_FORM } from '../main/util/types';
-import { floatToString } from '../crud/functions';
+import { floatToString, convertStringToDateTime } from '../crud/functions';
 import CustomButton from '../common/form/CustomButton';
 
 class SaleList extends Component {
 
     componentWillMount() {
         this.props.getList('sales', SALE_FORM);
-    }
-
-    convertStringToDate(date) {
-        const dateParts = date.split('/');
-        // console.log(dateParts);
-        const data = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
-        // console.log(data);
-        return data.toString();
     }
 
     render() {
@@ -31,7 +23,7 @@ class SaleList extends Component {
                 name: 'Data',
                 selector: 'date',
                 sortable: true,
-                format: d => moment(this.convertStringToDate(d.date)).format('L') // DD/mm/yyyy
+                format: d => moment(convertStringToDateTime(d.date)).format('L') // DD/mm/yyyy
                 // format: d => moment(d.date, 'DD/MM/YYYY').format('L') // DD/mm/yyyy
                 // format: d => moment(d.date, 'DD/MM/YYYY').format('lll') // 15 Abr 2019 as 12:05
             },

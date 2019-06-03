@@ -5,19 +5,22 @@ import { reduxForm, Field, formValueSelector } from 'redux-form';
 import { toastr } from 'react-redux-toastr';
 import _ from 'lodash';
 
-import { init, create, update, remove, getList, changeClient } from '../crud/crudActions';
-import LabelAndInput from '../common/form/labelAndInput';
+import { init, create, update, remove, getList, changeClient, changeDate } from '../crud/crudActions';
+// import LabelAndInput from '../common/form/labelAndInput';
 import ItemList from './itemList';
 import LabelAndSelect from '../common/form/labelAndSelect';
 import Summary from './summary';
 import { SALE_FORM, CLIENT_FORM } from '../main/util/types';
 import { PAYMENTS_FORM } from '../main/util/string';
 import LabelAndSelectSimple from '../common/form/labelAndSelectSimple';
+import DatePicker from '../common/form/labelAndInputPicker';
+import { convertDateTimeToString, setDateTime } from '../crud/functions';
 
 class SaleForm extends Component {
 
     componentWillMount() {
         this.props.getList('clients', CLIENT_FORM);
+        this.props.changeDate(this.props.dateInit);
     }
 
     componentDidMount() {
@@ -62,12 +65,13 @@ class SaleForm extends Component {
         if (values.quantity !== undefined) delete values.quantity;
         // console.log(values);
         if (validate) {
-            console.log(values);
-            // const total = this.calculateSummary();
-            // values.total = total.sumOfTotal;
-            // if (action === 'Incluir') create(values);
-            // else if (action === 'Alterar') update(values);
-            // else if (action === 'Excluir') remove(values);
+            values.date = setDateTime(this.props.date);
+            // console.log(values);
+            const total = this.calculateSummary();
+            values.total = total.sumOfTotal;
+            if (action === 'Incluir') create(values);
+            else if (action === 'Alterar') update(values);
+            else if (action === 'Excluir') remove(values);
         }
     }
 
@@ -91,14 +95,18 @@ class SaleForm extends Component {
     render() {
         const { handleSubmit, readOnly, saleItens, clientsList } = this.props;
         const { sumOfTotal } = this.calculateSummary();
-        // console.log(sumOfTotal);
+        // console.log(this.props.date);
+        // console.log(this.props.dateInit);
         return (
             // <form role='form' onSubmit={handleSubmit}>
             <form onSubmit={handleSubmit(v => this.onSubmit(v, this.props.submitLabel))}>
                 <div className='box-body'>
-                    <Field
+                    {/* <Field
                         name='date' component={LabelAndInput} readOnly={readOnly}
                         label='Data' cols='12 2' placeholder='Informe a data'
+                    /> */}
+                    <DatePicker
+                        startDate={this.props.dateInit} name='date' label='Data' cols='12 2' placeholder='Informe a data'
                     />
                     <Field
                         cols='12 4'
@@ -150,10 +158,12 @@ const selector = formValueSelector(SALE_FORM);
 const mapStateToProps = state => ({
     saleItens: selector(state, 'saleItens'),
     clientId: selector(state, 'client'),
+    dateInit: selector(state, 'date'),
     clientsList: state.crud.clientsList,
-    updateT: state.crud.update
+    updateT: state.crud.update,
+    date: state.crud.dateSale
 });
-const mapDispatchToProps = dispatch => bindActionCreators({ init, create, update, remove, getList, changeClient },
+const mapDispatchToProps = dispatch => bindActionCreators({ init, create, update, remove, getList, changeClient, changeDate },
     dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(SaleForm);
