@@ -23,6 +23,7 @@ export const floatToString = float => {
 const getOnlyNumbers = value => value.replace(/[^\d]/g, '');
 
 export const convertStringToDate = date => { // 03/06/2019
+    // console.log(date);
     const dateParts = date.split('/');
     const data = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
     return data;

@@ -5,7 +5,7 @@ import { reduxForm, Field, formValueSelector } from 'redux-form';
 import { toastr } from 'react-redux-toastr';
 import _ from 'lodash';
 
-import { init, create, update, remove, getList, changeProvider } from '../crud/crudActions';
+import { init, create, update, remove, getList, changeProvider, changeDate } from '../crud/crudActions';
 import LabelAndInput from '../common/form/labelAndInput';
 import ItemList from '../sale/itemList';
 import Summary from '../sale/summary';
@@ -13,6 +13,8 @@ import LabelAndSelect from '../common/form/labelAndSelect';
 import { PURCHASE_FORM, PROVIDER_FORM } from '../main/util/types';
 import { PAYMENTS_FORM } from '../main/util/string';
 import LabelAndSelectSimple from '../common/form/labelAndSelectSimple';
+import DatePicker from '../common/form/labelAndInputPicker';
+import { setDateTime, convertStringToDateTime } from '../crud/functions';
 
 class PurchaseForm extends Component {
 
@@ -62,6 +64,9 @@ class PurchaseForm extends Component {
         if (values.quantity !== undefined) delete values.quantity;
         // console.log(values);
         if (validate) {
+            this.props.date != '' ? values.date = setDateTime(this.props.date)
+            : values.date = setDateTime(convertStringToDateTime(this.props.dateInit));
+            // console.log(values);
             const total = this.calculateSummary();
             values.total = total.sumOfTotal;
             if (action === 'Incluir') create(values);
@@ -83,15 +88,22 @@ class PurchaseForm extends Component {
     }
 
     render() {
-        const { handleSubmit, readOnly, purchaseItens, providersList } = this.props;
+        const { handleSubmit, readOnly, purchaseItens, providersList, date, dateInit } = this.props;
         const { sumOfTotal } = this.calculateSummary();
-        // console.log(purchaseItens);
+        let dateValue = dateInit;
+        if (date != '') dateValue = date;
+        // console.log(dateValue);
         return (
             <form onSubmit={handleSubmit(v => this.onSubmit(v, this.props.submitLabel))}>
                 <div className='box-body'>
-                    <Field
+                    {/* <Field
                         name='date' component={LabelAndInput} readOnly={readOnly}
                         label='Data' cols='12 2' placeholder='Informe a data'
+                    /> */}
+                    <DatePicker
+                        startDate={dateValue}
+                        name='date' label='Data' cols='12 2'
+                        placeholder='Informe a data' idForm='purchase'
                     />
                     <Field
                         cols='12 4'
@@ -138,10 +150,12 @@ const selector = formValueSelector(PURCHASE_FORM);
 const mapStateToProps = state => ({
     purchaseItens: selector(state, 'purchaseItens'),
     providerId: selector(state, 'provider'),
+    dateInit: selector(state, 'date'),
     providersList: state.crud.providersList,
-    updateT: state.crud.update
+    updateT: state.crud.update,
+    date: state.crud.datePurchase
 });
-const mapDispatchToProps = dispatch => bindActionCreators({ init, create, update, remove, getList, changeProvider },
+const mapDispatchToProps = dispatch => bindActionCreators({ init, create, update, remove, getList, changeProvider, changeDate },
     dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(PurchaseForm);

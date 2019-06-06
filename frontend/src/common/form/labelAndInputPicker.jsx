@@ -15,37 +15,54 @@ class InputPicker extends Component {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    componentWillMount() {
-        // console.log(date.toLocaleString());
-        this.props.changeDate(this.props.startDate);
+    handleChange(date) {
+        this.props.changeDate(this.props.idForm, date);
     }
 
-    handleChange(date) {
-        this.props.changeDate(date);
+    renderDateSale(startDate) {
+        return (
+            <DatePicker
+                className='form-control'
+                dateFormat='dd/MM/yyyy'
+                selected={startDate.length != undefined ? convertStringToDateTime(startDate) : startDate}
+                // selected={this.props.dateSale.length != undefined ? convertStringToDateTime(this.props.dateSale) : this.props.dateSale}
+                onChange={this.handleChange}
+                placeholderText={this.props.placeholder}
+                readOnly={this.props.readOnly}
+                locale={pt}
+            />
+        );
+    }
+
+    renderDatePurchase(startDate) {
+        return (
+            <DatePicker
+                className='form-control'
+                dateFormat='dd/MM/yyyy'
+                selected={startDate.length != undefined ? convertStringToDateTime(startDate) : startDate}
+                // selected={this.props.datePurc != '' ? convertStringToDate(this.props.startDate) : this.props.startDate}
+                onChange={this.handleChange}
+                placeholderText={this.props.placeholder}
+                readOnly={this.props.readOnly}
+                locale={pt}
+            />
+        );
     }
 
     render() {
-        // console.log(this.props.date);
+        // console.log(this.props);
+        const { startDate } = this.props;
         return (
             <Grid cols={this.props.cols}>
                 <div className='form-group'>
                     <label htmlFor={this.props.name}>{this.props.label}</label>
-                    <DatePicker
-                        className='form-control'
-                        dateFormat='dd/MM/yyyy'
-                        selected={this.props.date.length != undefined ? convertStringToDateTime(this.props.date) : this.props.date}
-                        onChange={this.handleChange}
-                        placeholderText={this.props.placeholder}
-                        readOnly={this.props.readOnly}
-                        locale={pt}
-                    />
+                    {this.props.idForm === 'sale' ? this.renderDateSale(startDate) : this.renderDatePurchase(startDate)}
                 </div>
             </Grid>
         );
     }
 }
 
-const mapStateToProps = state => ({ date: state.crud.dateSale });
 const mapDispatchToProps = dispatch => bindActionCreators({ changeDate }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(InputPicker);
+export default connect(null, mapDispatchToProps)(InputPicker);

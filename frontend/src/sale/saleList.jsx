@@ -7,7 +7,7 @@ import 'moment/locale/pt-br';
 
 import { getList, showUpdate, showDelete } from '../crud/crudActions';
 import { SALE_FORM } from '../main/util/types';
-import { floatToString, convertStringToDateTime } from '../crud/functions';
+import { floatToString } from '../crud/functions';
 import CustomButton from '../common/form/CustomButton';
 
 class SaleList extends Component {
@@ -20,11 +20,12 @@ class SaleList extends Component {
         const list = this.props.list || [];
         const columns = [
             {
-                name: 'Data',
+                name: 'Data - Hora',
                 selector: 'date',
                 sortable: true,
-                format: d => moment(convertStringToDateTime(d.date)).format('L') // DD/mm/yyyy
-                // format: d => moment(d.date, 'DD/MM/YYYY').format('L') // DD/mm/yyyy
+                // format: d => moment(convertStringToDateTime(d.date)).format('L') // DD/mm/yyyy
+                format: d => moment(d.date, 'DD/MM/YYYY HH:mm').format('DD/MM/YYYY - HH:mm') // DD/mm/yyyy
+                // format: d => moment(convertStringToDateTime(d.date)).format('DD/MM/YYYY - HH:mm') // DD/mm/yyyy
                 // format: d => moment(d.date, 'DD/MM/YYYY').format('lll') // 15 Abr 2019 as 12:05
             },
             {
@@ -78,7 +79,7 @@ class SaleList extends Component {
                     pagination
                     noHeader
                     defaultSortField='date'
-                    defaultSortAsc
+                    defaultSortAsc={false}
                 />
             </div>
         );

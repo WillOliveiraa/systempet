@@ -18,6 +18,7 @@ export const CHANGE_CLIENT_SALES = 'change_client_sales';
 export const CHANGE_PROVIDER_PURCHASES = 'change_provider_purchases';
 export const CHANGE_PAYMENT_SALES = 'change_payment_sales';
 export const CHANGE_DATE_SALES = 'change_date_sales';
+export const CHANGE_DATE_PURCHASES = 'change_date_purchases';
 export const UPDATE_TOTAL_SALES = 'update_total';
 
 // FORMS

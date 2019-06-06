@@ -14,13 +14,12 @@ import { SALE_FORM, CLIENT_FORM } from '../main/util/types';
 import { PAYMENTS_FORM } from '../main/util/string';
 import LabelAndSelectSimple from '../common/form/labelAndSelectSimple';
 import DatePicker from '../common/form/labelAndInputPicker';
-import { convertDateTimeToString, setDateTime } from '../crud/functions';
+import { setDateTime, convertStringToDateTime } from '../crud/functions';
 
 class SaleForm extends Component {
 
     componentWillMount() {
         this.props.getList('clients', CLIENT_FORM);
-        this.props.changeDate(this.props.dateInit);
     }
 
     componentDidMount() {
@@ -65,7 +64,8 @@ class SaleForm extends Component {
         if (values.quantity !== undefined) delete values.quantity;
         // console.log(values);
         if (validate) {
-            values.date = setDateTime(this.props.date);
+            this.props.date != '' ? values.date = setDateTime(this.props.date)
+                : values.date = setDateTime(convertStringToDateTime(this.props.dateInit));
             // console.log(values);
             const total = this.calculateSummary();
             values.total = total.sumOfTotal;
@@ -93,10 +93,10 @@ class SaleForm extends Component {
     }
 
     render() {
-        const { handleSubmit, readOnly, saleItens, clientsList } = this.props;
+        const { handleSubmit, readOnly, saleItens, clientsList, date, dateInit } = this.props;
         const { sumOfTotal } = this.calculateSummary();
-        // console.log(this.props.date);
-        // console.log(this.props.dateInit);
+        let dateValue = dateInit;
+        if (date != '') dateValue = date;
         return (
             // <form role='form' onSubmit={handleSubmit}>
             <form onSubmit={handleSubmit(v => this.onSubmit(v, this.props.submitLabel))}>
@@ -106,7 +106,8 @@ class SaleForm extends Component {
                         label='Data' cols='12 2' placeholder='Informe a data'
                     /> */}
                     <DatePicker
-                        startDate={this.props.dateInit} name='date' label='Data' cols='12 2' placeholder='Informe a data'
+                        startDate={dateValue} name='date' label='Data' cols='12 2'
+                        placeholder='Informe a data' idForm='sale'
                     />
                     <Field
                         cols='12 4'

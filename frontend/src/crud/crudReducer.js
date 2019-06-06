@@ -1,7 +1,7 @@
 import {
     CLIENTS_FETCHED, PRODUCTS_FETCHED, ANIMALS_FETCHED, SALES_FETCHED, CHANGE_PRODUCT_SALES,
     CHANGE_PAYMENT_SALES, CHANGE_CLIENT_SALES, UPDATE_TOTAL_SALES, PURCHASE_FETCHED, PROVIDERS_FETCHED,
-    CHANGE_PROVIDER_PURCHASES, CHANGE_DATE_SALES
+    CHANGE_PROVIDER_PURCHASES, CHANGE_DATE_SALES, CHANGE_DATE_PURCHASES
 } from '../main/util/types';
 
 const INITIAL_STATE = {
@@ -17,6 +17,7 @@ const INITIAL_STATE = {
     paymentForm: '',
     update: false,
     dateSale: '',
+    datePurchase: '',
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -45,6 +46,8 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, update: action.payload };
         case CHANGE_DATE_SALES:
             return { ...state, dateSale: action.payload };
+        case CHANGE_DATE_PURCHASES:
+            return { ...state, datePurchase: action.payload };
         default:
             return state;
     }
