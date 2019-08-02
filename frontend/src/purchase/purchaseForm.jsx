@@ -6,7 +6,7 @@ import { toastr } from 'react-redux-toastr';
 import _ from 'lodash';
 
 import { init, create, update, remove, getList, changeProvider, changeDate } from '../crud/crudActions';
-import LabelAndInput from '../common/form/labelAndInput';
+// import LabelAndInput from '../common/form/labelAndInput';
 import ItemList from '../sale/itemList';
 import Summary from '../sale/summary';
 import LabelAndSelect from '../common/form/labelAndSelect';
@@ -64,7 +64,7 @@ class PurchaseForm extends Component {
         if (values.quantity !== undefined) delete values.quantity;
         // console.log(values);
         if (validate) {
-            this.props.date != '' ? values.date = setDateTime(this.props.date)
+            this.props.date !== '' ? values.date = setDateTime(this.props.date)
             : values.date = setDateTime(convertStringToDateTime(this.props.dateInit));
             // console.log(values);
             const total = this.calculateSummary();
@@ -91,7 +91,7 @@ class PurchaseForm extends Component {
         const { handleSubmit, readOnly, purchaseItens, providersList, date, dateInit } = this.props;
         const { sumOfTotal } = this.calculateSummary();
         let dateValue = dateInit;
-        if (date != '') dateValue = date;
+        if (date !== '') dateValue = date;
         // console.log(dateValue);
         return (
             <form onSubmit={handleSubmit(v => this.onSubmit(v, this.props.submitLabel))}>

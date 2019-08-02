@@ -6,7 +6,6 @@ import { toastr } from 'react-redux-toastr';
 import _ from 'lodash';
 
 import { init, create, update, remove, getList, changeClient, changeDate } from '../crud/crudActions';
-// import LabelAndInput from '../common/form/labelAndInput';
 import ItemList from './itemList';
 import LabelAndSelect from '../common/form/labelAndSelect';
 import Summary from './summary';
@@ -64,7 +63,7 @@ class SaleForm extends Component {
         if (values.quantity !== undefined) delete values.quantity;
         // console.log(values);
         if (validate) {
-            this.props.date != '' ? values.date = setDateTime(this.props.date)
+            this.props.date !== '' ? values.date = setDateTime(this.props.date)
                 : values.date = setDateTime(convertStringToDateTime(this.props.dateInit));
             // console.log(values);
             const total = this.calculateSummary();
@@ -96,15 +95,10 @@ class SaleForm extends Component {
         const { handleSubmit, readOnly, saleItens, clientsList, date, dateInit } = this.props;
         const { sumOfTotal } = this.calculateSummary();
         let dateValue = dateInit;
-        if (date != '') dateValue = date;
+        if (date !== '') dateValue = date;
         return (
-            // <form role='form' onSubmit={handleSubmit}>
             <form onSubmit={handleSubmit(v => this.onSubmit(v, this.props.submitLabel))}>
                 <div className='box-body'>
-                    {/* <Field
-                        name='date' component={LabelAndInput} readOnly={readOnly}
-                        label='Data' cols='12 2' placeholder='Informe a data'
-                    /> */}
                     <DatePicker
                         startDate={dateValue} name='date' label='Data' cols='12 2'
                         placeholder='Informe a data' idForm='sale'
@@ -119,10 +113,6 @@ class SaleForm extends Component {
                         readOnly={this.props.readOnly}
                         hide={false}
                     />
-                    {/* <Field
-                        name='paymentForm' component={LabelAndInput} readOnly={readOnly}
-                        label='Forma de Pagamento' cols='12 3' placeholder='Informe a forma de pagamento'
-                    /> */}
                     <Field
                         cols='12 4'
                         name='client[0]'

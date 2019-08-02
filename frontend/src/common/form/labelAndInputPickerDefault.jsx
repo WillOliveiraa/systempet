@@ -19,28 +19,13 @@ class InputPicker extends Component {
         this.props.changeDate(this.props.idForm, date);
     }
 
-    renderDateSale(startDate) {
+    renderDate(startDate) {
+        // console.log(startDate);
         return (
             <DatePicker
                 className='form-control'
                 dateFormat='dd/MM/yyyy'
                 selected={startDate.length !== undefined ? convertStringToDateTime(startDate) : startDate}
-                // selected={this.props.dateSale.length != undefined ? convertStringToDateTime(this.props.dateSale) : this.props.dateSale}
-                onChange={this.handleChange}
-                placeholderText={this.props.placeholder}
-                readOnly={this.props.readOnly}
-                locale={pt}
-            />
-        );
-    }
-
-    renderDatePurchase(startDate) {
-        return (
-            <DatePicker
-                className='form-control'
-                dateFormat='dd/MM/yyyy'
-                selected={startDate.length !== undefined ? convertStringToDateTime(startDate) : startDate}
-                // selected={this.props.datePurc != '' ? convertStringToDate(this.props.startDate) : this.props.startDate}
                 onChange={this.handleChange}
                 placeholderText={this.props.placeholder}
                 readOnly={this.props.readOnly}
@@ -50,13 +35,13 @@ class InputPicker extends Component {
     }
 
     render() {
-        // console.log(this.props);
+        console.log(this.props);
         const { startDate } = this.props;
         return (
             <Grid cols={this.props.cols}>
                 <div className='form-group'>
                     <label htmlFor={this.props.name}>{this.props.label}</label>
-                    {this.props.idForm === 'sale' ? this.renderDateSale(startDate) : this.renderDatePurchase(startDate)}
+                    {this.renderDate(startDate)}
                 </div>
             </Grid>
         );

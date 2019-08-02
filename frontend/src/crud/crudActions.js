@@ -8,13 +8,14 @@ import {
     CLIENTS_FETCHED, CLIENT_FORM, PRODUCT_FORM, ANIMAL_FORM, SALE_FORM, PRODUCTS_FETCHED,
     ANIMALS_FETCHED, SALES_FETCHED, CHANGE_PRODUCT_SALES, CHANGE_PAYMENT_SALES, CHANGE_CLIENT_SALES,
     UPDATE_TOTAL_SALES, PURCHASE_FORM, PURCHASE_FETCHED, PROVIDER_FORM, PROVIDERS_FETCHED, CHANGE_PROVIDER_PURCHASES,
-    CHANGE_DATE_SALES, CHANGE_DATE_PURCHASES
+    CHANGE_DATE_SALES, CHANGE_DATE_PURCHASES, CHANGE_DATE_ANIMAL
 } from '../main/util/types';
 
 const INITIAL_VALUES = {};
 // const INITIAL_VALUES_SALES = {};
 const INITIAL_VALUES_SALES = { saleItens: [], date: new Date(), paymentForm: 'a vista' };
 const INITIAL_VALUES_PURCHASE = { purchaseItens: [], date: new Date(), paymentForm: 'a vista' };
+const INITIAL_VALUES_ANIMAL = { birthDate: new Date() };
 // const INITIAL_VALUES_SALES = { saleItens: [{ product: [{}] }] };
 
 export function getList(url, form) {
@@ -130,6 +131,8 @@ export function init(url, form) {
         values = INITIAL_VALUES_SALES;
     } else if (form === PURCHASE_FORM) {
         values = INITIAL_VALUES_PURCHASE;
+    } else if (form === ANIMAL_FORM) {
+        values = INITIAL_VALUES_ANIMAL;
     } else values = INITIAL_VALUES;
     // console.log(values);
     return [
@@ -177,9 +180,13 @@ export function changeDate(key, value) {
         return dispatch => {
             dispatch({ type: CHANGE_DATE_SALES, payload: value });
         };
-    } else {
+    } else if (key === 'purchase') {
         return dispatch => {
             dispatch({ type: CHANGE_DATE_PURCHASES, payload: value });
+        };
+    } else if (key === 'animal') {
+        return dispatch => {
+            dispatch({ type: CHANGE_DATE_ANIMAL, payload: value });
         };
     }
 }

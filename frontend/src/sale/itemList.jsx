@@ -63,8 +63,8 @@ class ItemList extends Component {
                 isOk = false;
             }
         }
-        console.log(this.props);
-        console.log(form);
+        // console.log(this.props);
+        // console.log(form);
         if (isOk) {
             this.updateRead(index + 1);
             if (item !== null) {
