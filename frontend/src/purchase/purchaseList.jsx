@@ -7,7 +7,7 @@ import 'moment/locale/pt-br';
 
 import { getList, showUpdate, showDelete } from '../crud/crudActions';
 import { PURCHASE_FORM } from '../main/util/types';
-import { floatToString, convertStringToDateTime } from '../crud/functions';
+import { floatToString } from '../crud/functions';
 import CustomButton from '../common/form/CustomButton';
 
 class PurchaseList extends Component {
@@ -24,8 +24,10 @@ class PurchaseList extends Component {
                 selector: 'date',
                 sortable: true,
                 // format: d => moment(convertStringToDateTime(d.date)).format('L') // DD/mm/yyyy
-                format: d => moment(d.date, 'DD/MM/YYYY HH:mm').format('DD/MM/YYYY - HH:mm') // DD/mm/yyyy
                 // format: d => moment(d.date, 'DD/MM/YYYY HH:mm').format('DD/MM/YYYY - HH:mm') // DD/mm/yyyy HH:mm
+
+                // format: d => moment(d.date, 'DD/MM/YYYY HH:mm').format('DD/MM/YYYY - HH:mm') // DD/mm/yyyy
+                format: d => moment(d.date).format('DD/MM/YYYY - HH:mm') // DD/mm/yyyy
             },
             {
                 name: 'Forma de Pagamento',

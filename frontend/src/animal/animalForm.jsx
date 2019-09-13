@@ -26,7 +26,7 @@ class AnimalForm extends Component {
     render() {
         const { handleSubmit, readOnly, date, dateInit } = this.props;
         let dateValue = dateInit;
-        if (date != '') dateValue = date;
+        if (date !== '') dateValue = date;
         return (
             <form onSubmit={handleSubmit(v => this.onSubmit(v, this.props.submitLabel))}>
                 <div className='box-body'>

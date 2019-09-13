@@ -23,7 +23,7 @@ class Navbar extends Component {
                         className={`dropdown user user-menu ${this.state.open ? 'open' : ''}`}
                     >
                         <a
-                            href='javascript:;' onClick={() => this.changeOpen()}
+                            href='#void' onClick={() => this.changeOpen()}
                             aria-expanded={this.state.open ? 'true' : 'false'}
                             className='dropdown-toggle'
                             data-toggle='dropdown'
@@ -38,7 +38,7 @@ class Navbar extends Component {
                             </li>
                             <li className='user-footer'>
                                 <div className='pull-right'>
-                                    <a href='#' onClick={this.props.logout} className='btn btn-default btn-flat'>Sair</a>
+                                    <a href='#void' onClick={this.props.logout} className='btn btn-default btn-flat'>Sair</a>
                                 </div>
                             </li>
                         </ul>

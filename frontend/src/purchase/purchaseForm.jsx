@@ -64,9 +64,11 @@ class PurchaseForm extends Component {
         if (values.quantity !== undefined) delete values.quantity;
         // console.log(values);
         if (validate) {
-            this.props.date !== '' ? values.date = setDateTime(this.props.date)
-            : values.date = setDateTime(convertStringToDateTime(this.props.dateInit));
+            // this.props.date !== '' ? values.date = setDateTime(this.props.date)
+            // : values.date = setDateTime(convertStringToDateTime(this.props.dateInit));
             // console.log(values);
+            this.props.date !== '' ? values.date = this.props.date
+                : values.date = this.props.dateInit;
             const total = this.calculateSummary();
             values.total = total.sumOfTotal;
             if (action === 'Incluir') create(values);

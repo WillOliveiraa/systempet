@@ -24,7 +24,10 @@ class SaleList extends Component {
                 selector: 'date',
                 sortable: true,
                 // format: d => moment(convertStringToDateTime(d.date)).format('L') // DD/mm/yyyy
-                format: d => moment(d.date, 'DD/MM/YYYY HH:mm').format('DD/MM/YYYY - HH:mm') // DD/mm/yyyy
+
+                // format: d => moment(d.date, 'DD/MM/YYYY HH:mm').format('DD/MM/YYYY - HH:mm') // DD/mm/yyyy
+                format: d => moment(d.date).format('DD/MM/YYYY - HH:mm') // DD/mm/yyyy
+                
                 // format: d => moment(convertStringToDateTime(d.date)).format('DD/MM/YYYY - HH:mm') // DD/mm/yyyy
                 // format: d => moment(d.date, 'DD/MM/YYYY').format('lll') // 15 Abr 2019 as 12:05
             },

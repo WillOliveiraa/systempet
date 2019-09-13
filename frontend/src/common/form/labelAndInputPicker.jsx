@@ -20,12 +20,14 @@ class InputPicker extends Component {
     }
 
     renderDateSale(startDate) {
+        // console.log(startDate);
         return (
             <DatePicker
                 className='form-control'
                 dateFormat='dd/MM/yyyy'
-                selected={startDate.length !== undefined ? convertStringToDateTime(startDate) : startDate}
-                // selected={this.props.dateSale.length != undefined ? convertStringToDateTime(this.props.dateSale) : this.props.dateSale}
+                selected={new Date(startDate)}
+                // selected={startDate.toString().indexOf(' ') >= 0 && startDate.length < 20 ? convertStringToDateTime(startDate) : new Date(startDate)}
+                // selected={startDate.length !== undefined ? convertStringToDateTime(startDate) : startDate}
                 onChange={this.handleChange}
                 placeholderText={this.props.placeholder}
                 readOnly={this.props.readOnly}
@@ -39,7 +41,8 @@ class InputPicker extends Component {
             <DatePicker
                 className='form-control'
                 dateFormat='dd/MM/yyyy'
-                selected={startDate.length !== undefined ? convertStringToDateTime(startDate) : startDate}
+                selected={startDate.toString().indexOf(' ') >= 0 && startDate.length < 20 ? convertStringToDateTime(startDate) : new Date(startDate)}
+                // selected={startDate.length !== undefined ? convertStringToDateTime(startDate) : startDate}
                 // selected={this.props.datePurc != '' ? convertStringToDate(this.props.startDate) : this.props.startDate}
                 onChange={this.handleChange}
                 placeholderText={this.props.placeholder}

@@ -32,7 +32,7 @@ class SaleForm extends Component {
         for (let j = 0; j < values.saleItens.length; j++) {
             if (values.saleItens[j].product === undefined || values.saleItens[j].product === []) {
                 validate = false;
-                toastr.error('Error', 'Por favor selecione um produto');
+                toastr.warning('Alerta', 'Por favor selecione um produto');
             } else if (typeof values.saleItens[j].product[0] === 'string') {
                 for (let i = 0; i < productsList.length; i++) {
                     if (productsList[i]._id === values.saleItens[j].product[0]) {
@@ -44,7 +44,7 @@ class SaleForm extends Component {
         }
         if (values.client === undefined || values.client.length === 0) {
             validate = false;
-            toastr.error('Error', 'Por favor selecione um cliente');
+            toastr.warning('Alerta', 'Por favor selecione um cliente');
         } else if (typeof values.client[0] === 'string') {
             for (let i = 0; i < clientsList.length; i++) {
                 if (clientsList[i]._id === values.client[0]) {
@@ -57,14 +57,17 @@ class SaleForm extends Component {
         }
         if (values.saleItens.length === 0) {
             validate = false;
-            toastr.error('Error', 'Por adicione um item de venda');
+            toastr.warning('Alerta', 'Por adicione um item de venda');
         }
         if (values.product !== undefined) delete values.product;
         if (values.quantity !== undefined) delete values.quantity;
-        // console.log(values);
         if (validate) {
-            this.props.date !== '' ? values.date = setDateTime(this.props.date)
-                : values.date = setDateTime(convertStringToDateTime(this.props.dateInit));
+            // const data = new Date();
+            // data.toString()
+            this.props.date !== '' ? values.date = this.props.date
+                : values.date = this.props.dateInit;
+            // this.props.date !== '' ? values.date = setDateTime(this.props.date)
+            //     : values.date = setDateTime(convertStringToDateTime(this.props.dateInit));
             // console.log(values);
             const total = this.calculateSummary();
             values.total = total.sumOfTotal;
@@ -96,6 +99,7 @@ class SaleForm extends Component {
         const { sumOfTotal } = this.calculateSummary();
         let dateValue = dateInit;
         if (date !== '') dateValue = date;
+        // console.log(dateValue);
         return (
             <form onSubmit={handleSubmit(v => this.onSubmit(v, this.props.submitLabel))}>
                 <div className='box-body'>
