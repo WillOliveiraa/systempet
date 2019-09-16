@@ -1,7 +1,7 @@
 import {
     CLIENTS_FETCHED, PRODUCTS_FETCHED, ANIMALS_FETCHED, SALES_FETCHED, CHANGE_PRODUCT_SALES,
     CHANGE_PAYMENT_SALES, CHANGE_CLIENT_SALES, UPDATE_TOTAL_SALES, PURCHASE_FETCHED, PROVIDERS_FETCHED,
-    CHANGE_PROVIDER_PURCHASES, CHANGE_DATE_SALES, CHANGE_DATE_PURCHASES, CHANGE_DATE_ANIMAL
+    CHANGE_PROVIDER_PURCHASES, CHANGE_DATE_SALES, CHANGE_DATE_PURCHASES, CHANGE_BIRTHDATE_ANIMAL, CHANGE_BIRTHDATE_CLIENT
 } from '../main/util/types';
 
 const INITIAL_STATE = {
@@ -18,7 +18,8 @@ const INITIAL_STATE = {
     update: false,
     dateSale: '',
     datePurchase: '',
-    dateAnimal: '',
+    birthDateAnimal: '',
+    birthDateClient: ''
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -49,8 +50,10 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, dateSale: action.payload };
         case CHANGE_DATE_PURCHASES:
             return { ...state, datePurchase: action.payload };
-        case CHANGE_DATE_ANIMAL:
-            return { ...state, dateAnimal: action.payload };
+        case CHANGE_BIRTHDATE_ANIMAL:
+            return { ...state, birthDateAnimal: action.payload };
+        case CHANGE_BIRTHDATE_CLIENT:
+            return { ...state, birthDateClient: action.payload };
         default:
             return state;
     }

@@ -214,33 +214,35 @@ class ItemList extends Component {
                         cols='12 12'
                     />
                 </td>
-                <td>
-                    <button
-                        type='button' className='btn btn-warning'
-                        disabled={this.state.listReadEdt.length === list.length ?
-                            this.state.listReadEdt[index].disabled : false}
-                        onClick={() => this.edit(index, item)}
-                    >
-                        <i
-                            className={this.state.listReadEdt.length === list.length ?
-                                `fa fa-${this.state.listReadEdt[index].icon}` : 'fa fa-pencil'}
-                        ></i>
-                    </button>
-                    <button
-                        type='button' className='btn btn-success'
-                        disabled={this.state.disabledBtn}
-                        onClick={() => this.add(true, index + 1, item)}
-                    >
-                        <i className='fa fa-clone'></i>
-                    </button>
-                    <button
-                        type='button' className='btn btn-danger'
-                        disabled={this.state.disabledBtn}
-                        onClick={() => this.remove(index, true)}
-                    >
-                        <i className='fa fa-trash-o'></i>
-                    </button>
-                </td>
+                {this.props.readOnly === true ? <td /> :
+                    <td>
+                        <button
+                            type='button' className='btn btn-warning'
+                            disabled={this.state.listReadEdt.length === list.length ?
+                                this.state.listReadEdt[index].disabled : false}
+                            onClick={() => this.edit(index, item)}
+                        >
+                            <i
+                                className={this.state.listReadEdt.length === list.length ?
+                                    `fa fa-${this.state.listReadEdt[index].icon}` : 'fa fa-pencil'}
+                            ></i>
+                        </button>
+                        <button
+                            type='button' className='btn btn-success'
+                            disabled={this.state.disabledBtn}
+                            onClick={() => this.add(true, index + 1, item)}
+                        >
+                            <i className='fa fa-clone'></i>
+                        </button>
+                        <button
+                            type='button' className='btn btn-danger'
+                            disabled={this.state.disabledBtn}
+                            onClick={() => this.remove(index, true)}
+                        >
+                            <i className='fa fa-trash-o'></i>
+                        </button>
+                    </td>
+                }
             </tr>
         ));
     }
@@ -275,6 +277,7 @@ class ItemList extends Component {
                                 <button
                                     type='button' className='btn btn-success'
                                     onClick={() => this.add(false, this.props.list.length, null)}
+                                    disabled={this.props.readOnly}
                                 >
                                     <i className='fa fa-plus'></i> Adicionar Item
                                 </button>

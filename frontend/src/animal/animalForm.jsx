@@ -38,14 +38,15 @@ class AnimalForm extends Component {
                         name='breed' component={LabelAndInput} readOnly={readOnly}
                         label='Raça' cols='12 4' placeholder='Informe a raça'
                     />
-                    {/* <Field
-                        name='birthDate' component={LabelAndInput} readOnly={readOnly} //type='number'
-                        label='Data de Nascimento' cols='12 4' placeholder='Informe a data de nascimento'
-                    /> */}
-                    <DatePicker
-                        startDate={dateValue} name='birthDate' label='Data de Nascimento' cols='12 4'
-                        placeholder='Informe a data de nascimento' idForm='animal'
-                    />
+                    {this.props.submitLabel === 'Excluir' ?
+                        <Field
+                            name='birthDate' component={LabelAndInput} readOnly={readOnly} //type='number'
+                            label='Data de Nascimento' cols='12 4' placeholder='Informe a data de nascimento'
+                        /> :
+                        <DatePicker
+                            startDate={dateValue} name='birthDate' label='Data de Nascimento' cols='12 4'
+                            placeholder='Informe a data de nascimento' idForm='animal'
+                        />}
                     <Field
                         name='color' component={LabelAndInput} readOnly={readOnly}
                         label='Cor' cols='12 4' placeholder='Informe a cor'
@@ -71,7 +72,7 @@ AnimalForm = reduxForm({ form: ANIMAL_FORM, destroyOnUnmount: false })(AnimalFor
 const selector = formValueSelector(ANIMAL_FORM);
 const mapStateToProps = state => ({
     dateInit: selector(state, 'birthDate'),
-    date: state.crud.dateAnimal
+    date: state.crud.birthDateAnimal
 });
 const mapDispatchToProps = dispatch => bindActionCreators({ init, create, update, remove }, dispatch);
 

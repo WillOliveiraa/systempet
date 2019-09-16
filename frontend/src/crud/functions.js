@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export const stringToFloat = string => {
     if (!string) return 0;
     if (string.length === 1) return parseFloat(`.0${string}`);
@@ -40,6 +42,11 @@ export const convertDateTimeToString = data => {
     // const data = "15/01/2012 21:10:17";
     const readableDate = data.substring(3, 6) + data.substring(0, 2) + data.substring(5, data.length);
     return new Date(readableDate).toLocaleString();
+}
+
+export function convertDateTimeToStringMoment(date) {
+    let data = moment(date);
+    return data.format('DD/MM/YYYY - HH:mm');
 }
 
 export const setDateTime = data => {

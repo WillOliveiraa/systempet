@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { toastr } from 'react-redux-toastr';
-import { initialize } from 'redux-form';
+import { initialize, change } from 'redux-form';
 import { showTabs, selectTab } from '../common/tab/tabActions';
 
 import consts from '../main/util/string';
@@ -8,7 +8,7 @@ import {
     CLIENTS_FETCHED, CLIENT_FORM, PRODUCT_FORM, ANIMAL_FORM, SALE_FORM, PRODUCTS_FETCHED,
     ANIMALS_FETCHED, SALES_FETCHED, CHANGE_PRODUCT_SALES, CHANGE_PAYMENT_SALES, CHANGE_CLIENT_SALES,
     UPDATE_TOTAL_SALES, PURCHASE_FORM, PURCHASE_FETCHED, PROVIDER_FORM, PROVIDERS_FETCHED, CHANGE_PROVIDER_PURCHASES,
-    CHANGE_DATE_SALES, CHANGE_DATE_PURCHASES, CHANGE_DATE_ANIMAL
+    CHANGE_DATE_SALES, CHANGE_DATE_PURCHASES, CHANGE_BIRTHDATE_ANIMAL, CHANGE_BIRTHDATE_CLIENT
 } from '../main/util/types';
 
 const INITIAL_VALUES = {};
@@ -16,6 +16,7 @@ const INITIAL_VALUES = {};
 const INITIAL_VALUES_SALES = { saleItens: [], date: new Date(), paymentForm: 'a vista' };
 const INITIAL_VALUES_PURCHASE = { purchaseItens: [], date: new Date(), paymentForm: 'a vista' };
 const INITIAL_VALUES_ANIMAL = { birthDate: new Date() };
+const INITIAL_VALUES_CLIENT = { birthDate: new Date() };
 // const INITIAL_VALUES_SALES = { saleItens: [{ product: [{}] }] };
 
 export function getList(url, form) {
@@ -61,7 +62,7 @@ export function create(values) {
 }
 
 export function update(values) {
-    console.log(values);
+    // console.log(values);
     return submit(values, 'put', localStorage.getItem('form'));
 }
 
@@ -133,6 +134,8 @@ export function init(url, form) {
         values = INITIAL_VALUES_PURCHASE;
     } else if (form === ANIMAL_FORM) {
         values = INITIAL_VALUES_ANIMAL;
+    } else if (form === CLIENT_FORM) {
+        values = INITIAL_VALUES_CLIENT;
     } else values = INITIAL_VALUES;
     // console.log(values);
     return [
@@ -175,27 +178,26 @@ export function changeUpdate(value) {
     };
 }
 
-export function changeDate(key, value) {
+export function changeDate(key, value, deleted) {
     if (key === 'sale') {
         return dispatch => {
+            deleted === true ?
+            dispatch(change(SALE_FORM, 'date', value)) :
             dispatch({ type: CHANGE_DATE_SALES, payload: value });
         };
     } else if (key === 'purchase') {
         return dispatch => {
+            deleted === true ?
+            dispatch(change(PURCHASE_FORM, 'date', value)) :
             dispatch({ type: CHANGE_DATE_PURCHASES, payload: value });
         };
     } else if (key === 'animal') {
         return dispatch => {
-            dispatch({ type: CHANGE_DATE_ANIMAL, payload: value });
+            dispatch({ type: CHANGE_BIRTHDATE_ANIMAL, payload: value });
+        };
+    } else if (key === 'client') {
+        return dispatch => {
+            dispatch({ type: CHANGE_BIRTHDATE_CLIENT, payload: value });
         };
     }
 }
-
-// function getDateToday() {
-//     const today = new Date();
-//     const dd = String(today.getDate()).padStart(2, '0');
-//     const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-//     const yyyy = today.getFullYear();
-
-//     return `${dd}/${mm}/${yyyy}`;
-// }

@@ -14,7 +14,8 @@ import { PURCHASE_FORM, PROVIDER_FORM } from '../main/util/types';
 import { PAYMENTS_FORM } from '../main/util/string';
 import LabelAndSelectSimple from '../common/form/labelAndSelectSimple';
 import DatePicker from '../common/form/labelAndInputPicker';
-import { setDateTime, convertStringToDateTime } from '../crud/functions';
+import { convertDateTimeToStringMoment } from '../crud/functions';
+import labelAndInput from '../common/form/labelAndInput';
 
 class PurchaseForm extends Component {
 
@@ -24,6 +25,9 @@ class PurchaseForm extends Component {
 
     componentDidMount() {
         if (this.props.providerId !== undefined) this.props.changeProvider(this.props.providerId[0]._id);
+        if (this.props.submitLabel === 'Excluir') {
+            this.props.changeDate('purchase', convertDateTimeToStringMoment(this.props.dateInit), true);
+        }
     }
 
     onSubmit(values, action) {
@@ -98,15 +102,16 @@ class PurchaseForm extends Component {
         return (
             <form onSubmit={handleSubmit(v => this.onSubmit(v, this.props.submitLabel))}>
                 <div className='box-body'>
-                    {/* <Field
-                        name='date' component={LabelAndInput} readOnly={readOnly}
-                        label='Data' cols='12 2' placeholder='Informe a data'
-                    /> */}
-                    <DatePicker
-                        startDate={dateValue}
-                        name='date' label='Data' cols='12 2'
-                        placeholder='Informe a data' idForm='purchase'
-                    />
+                    {this.props.submitLabel === 'Excluir' ?
+                        <Field
+                            name='date' component={labelAndInput} readOnly={readOnly}
+                            label='Data' cols='12 2' placeholder='Informe a data'
+                        /> :
+                        <DatePicker
+                            startDate={dateValue}
+                            name='date' label='Data' cols='12 2'
+                            placeholder='Informe a data' idForm='purchase'
+                        />}
                     <Field
                         cols='12 4'
                         name='paymentForm'

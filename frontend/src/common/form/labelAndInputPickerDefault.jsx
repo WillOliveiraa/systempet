@@ -35,7 +35,7 @@ class InputPicker extends Component {
     }
 
     render() {
-        console.log(this.props);
+        // console.log(this.props);
         const { startDate } = this.props;
         return (
             <Grid cols={this.props.cols}>
